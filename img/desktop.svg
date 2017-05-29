@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1123.594px" height="915.415px" viewBox="0 0 1123.594 915.415" enable-background="new 0 0 1123.594 915.415"
+	 xml:space="preserve">
+<g id="Desk">
+	<rect x="985.985" y="339.292" fill="#CEC3A7" width="20" height="352"/>
+	<rect x="114.985" y="339.792" fill="#CEC3A7" width="20" height="351"/>
+	<polygon fill="#D8CCBF" points="114.985,339.792 1009.297,339.792 1085.186,522.793 37.35,522.793 	"/>
+	<rect x="37.35" y="522.793" fill="#CEC3A7" width="22" height="352"/>
+	<rect x="1065.186" y="522.793" fill="#CEC3A7" width="20" height="352"/>
+	<rect x="37.35" y="522.793" fill="#BCA68B" width="1047.834" height="24.883"/>
+</g>
+<g id="Screen">
+	<polyline fill="#33353D" points="612.658,316.115 612.658,380.349 547.658,380.349 547.658,403.823 612.658,403.823 
+		640.658,403.823 705.658,403.823 705.347,380.349 641.658,380.349 641.658,316.115 	"/>
+	
+		<rect x="414.985" y="79.208" fill="#45ADDB" stroke="#33353D" stroke-width="20" stroke-miterlimit="10" width="413" height="265"/>
+	<path display="none" fill="#33353D" d="M742.694,414.208c0.011,0,0.051-0.568,0.051-0.941c0-36.925-54.213-66.775-121.087-66.775
+		s-121.087,29.807-121.087,66.732c0,0.373,0.04,0.983,0.051,0.983L742.694,414.208L742.694,414.208z"/>
+</g>
+<g id="Computer">
+	<polygon fill="#4C4C4C" points="337.343,377.734 292.952,482.5 143.528,138.91 189.163,36.208 337.343,36.208 	"/>
+	<rect x="143.87" y="138.5" fill="#33353D" width="148.651" height="344"/>
+</g>
+</svg>
