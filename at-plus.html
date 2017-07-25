@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh">
+        <script type="text/javascript">
+            var isMobile = {
+                Android: function() {
+                    return navigator.userAgent.match(/Android/i);
+                },
+                BlackBerry: function() {
+                    return navigator.userAgent.match(/BlackBerry/i);
+                },
+                iOS: function() {
+                    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                },
+                Opera: function() {
+                    return navigator.userAgent.match(/Opera Mini/i);
+                },
+                Windows: function() {
+                    return navigator.userAgent.match(/IEMobile/i);
+                },
+                any: function() {
+                    return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                }
+            };
+            if (isMobile.Android()) {
+                document.location.href = "https://play.google.com/store/apps/details?id=com.atplus";
+            } else if(isMobile.iOS()) {
+                document.location.href = "https://itunes.apple.com/app/at/id1254955631";
+            }
+        </script>
+        <title>Page Redirection</title>
+    </head>
+    <body>
+        If you are not redirected automatically, please use the following link:
+        <ul>
+            <li>iOS - <a href="https://itunes.apple.com/app/at/id1254955631">https://itunes.apple.com/app/at/id1254955631</a></li>       
+            <li>Android - <a href="https://play.google.com/store/apps/details?id=com.atplus">https://play.google.com/store/apps/details?id=com.atplus</a></li>             
+        </ul>
+    </body>
+</html>
