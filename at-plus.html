@@ -12,7 +12,7 @@
                     return navigator.userAgent.match(/BlackBerry/i);
                 },
                 iOS: function() {
-                    return navigator.userAgent.match(/iPhone|iPad|iPod/i) || /micromessenger/.test(navigator.userAgent.toLowerCase());
+                    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
                 },
                 Opera: function() {
                     return navigator.userAgent.match(/Opera Mini/i);
@@ -21,12 +21,12 @@
                     return navigator.userAgent.match(/IEMobile/i);
                 },
                 any: function() {
-                    return (isMobile.WeChat() || isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                    return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
                 }
             };
             if (isMobile.Android()) {
                 document.location.href = "https://play.google.com/store/apps/details?id=com.atplus";
-            } else if(isMobile.iOS()) {
+            } else {
                 document.location.href = "https://itunes.apple.com/app/at/id1254955631";
             }
         </script>
