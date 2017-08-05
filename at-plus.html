@@ -12,7 +12,7 @@
                     return navigator.userAgent.match(/BlackBerry/i);
                 },
                 iOS: function() {
-                    return navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.userAgent.match(/MicroMessenger/i);
+                    return navigator.userAgent.match(/iPhone|iPad|iPod/i) || /micromessenger/.test(navigator.userAgent.toLowerCase());
                 },
                 Opera: function() {
                     return navigator.userAgent.match(/Opera Mini/i);
