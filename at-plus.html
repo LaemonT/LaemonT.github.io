@@ -12,7 +12,7 @@
                     return navigator.userAgent.match(/BlackBerry/i);
                 },
                 iOS: function() {
-                    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                    return navigator.userAgent.match(/iPhone|iPad|iPod/i) || navigator.userAgent.match(/MicroMessenger/i);
                 },
                 Opera: function() {
                     return navigator.userAgent.match(/Opera Mini/i);
@@ -20,16 +20,13 @@
                 Windows: function() {
                     return navigator.userAgent.match(/IEMobile/i);
                 },
-                WeChat: function() {
-                    return navigator.userAgent.match(/MicroMessenger/i);
-                },
                 any: function() {
                     return (isMobile.WeChat() || isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
                 }
             };
             if (isMobile.Android()) {
                 document.location.href = "https://play.google.com/store/apps/details?id=com.atplus";
-            } else if(isMobile.iOS() || isMobile.WeChat()) {
+            } else if(isMobile.iOS()) {
                 document.location.href = "https://itunes.apple.com/app/at/id1254955631";
             }
         </script>
