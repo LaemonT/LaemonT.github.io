@@ -20,13 +20,13 @@
                 Windows: function() {
                     return navigator.userAgent.match(/IEMobile/i);
                 },
-                any: function() {
+                Any: function() {
                     return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
                 }
             };
             if (isMobile.Android()) {
                 document.location.href = "https://play.google.com/store/apps/details?id=com.atplus";
-            } else {
+            } else if (isMobile.iOS()) {
                 document.location.href = "https://itunes.apple.com/app/at/id1254955631";
             }
         </script>
