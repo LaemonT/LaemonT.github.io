@@ -19,11 +19,57 @@
         </style>
     </head>
     <body>
-        <iframe id="typeform-full"
-            width="100%"
-            height="100%"
-            frameborder="0"
-            src="https://lemont.typeform.com/to/n0tcww"></iframe>
+        <!-- <script type="text/javascript">
+            // function getUrlVars() {
+            //     var vars = {};
+            //     var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            //         vars[key] = value;
+            //     });
+            //     return vars;
+            // }
+            function iframeDidLoad() {
+                // var param = getUrlVars();
+                // var mobile = param["mobile"];
+                document.getElementById('typeform-full').src = "https://lemont.typeform.com/to/n0tcww";
+            }
+        </script> -->
+
+        <script>
+            var url = window.location.href;
+            console.log(url);
+            
+            var param = {};
+            var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                param[key] = value;
+            });
+            var mobile = param["mobile"];
+            
+            var iframe = document.createElement('iframe');
+            iframe.id = "typeform-full";
+            iframe.width="100%";
+            iframe.height="100%";
+            iframe.src = "https://lemont.typeform.com/to/n0tcww";
+            document.body.appendChild(iframe); // add it to wherever you need it in the document
+        </script>
         <script type="text/javascript" src="https://embed.typeform.com/embed.js"></script>
+        
+        <!-- <div class="typeform-widget" data-url="https://lemont.typeform.com/to/n0tcww" style="width: 100%; height: 500px;" ></div> 
+        <script> 
+        (function() { 
+            var qs,js,q,s,d=document, 
+                gi=d.getElementById, 
+                ce=d.createElement, 
+                gt=d.getElementsByTagName, 
+                id="typef_orm", 
+                b="https://embed.typeform.com/"; 
+            if(!gi.call(d,id)) { 
+                js=ce.call(d,"script"); 
+                js.id=id; 
+                js.src=b+"embed.js"; 
+                q=gt.call(d,"script")[0]; 
+                q.parentNode.insertBefore(js,q) 
+            } 
+        })()
+        </script> -->
     </body>
 </html>
