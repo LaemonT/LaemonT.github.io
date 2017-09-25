@@ -27,7 +27,6 @@ window.onload = function() {
 		updateSignInButtonUI();
 		updateSignInFormUI();
 		updateSignOutButtonUI();
-		updateSignedInUserStatusUI();
 		updateVerificationCodeFormUI();
 	});
 
@@ -262,20 +261,6 @@ function updateSignOutButtonUI() {
 		document.getElementById('sign-out-button').style.display = 'block';
 	} else {
 		document.getElementById('sign-out-button').style.display = 'none';
-	}
-}
-
-/**
- * Updates the Signed in user status panel.
- */
-function updateSignedInUserStatusUI() {
-	var user = firebase.auth().currentUser;
-	if (user) {
-		document.getElementById('sign-in-status').textContent = 'Signed in';
-		document.getElementById('account-details').textContent = JSON.stringify(user, null, '  ');
-	} else {
-		document.getElementById('sign-in-status').textContent = 'Signed out';
-		document.getElementById('account-details').textContent = 'null';
 	}
 }
 
