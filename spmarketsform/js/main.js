@@ -328,8 +328,8 @@ function initLoadingIndicator() {
  */
 function showLoadingIndicator(show) {
 	if (show) {
-		document.getElementById('indicator').style.display.display = 'none';
+		document.getElementById('indicator').style.display = 'block';
 	} else {
-		document.getElementById('indicator').style.display.display = 'block';
+		document.getElementById('indicator').style.display = 'none';
 	}
 }
