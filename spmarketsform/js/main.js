@@ -76,6 +76,10 @@ function onSignInSubmit(e) {
 		// [START signin]
 		var phoneNumber = getFormattedPhoneNumber();
 		var appVerifier = window.recaptchaVerifier;
+		// Check if the mobile number is already used
+		if (isUserAlreadyCompletedForm()) {
+			return;
+		}
 		// Send verification code
 		showLoadingIndicator(true);
 		firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
@@ -274,12 +278,12 @@ function updateSignOutButtonUI() {
  */
 function loadFormInCurrentPage() {
 	// Hide main div
-	$("#main").hide();
+	$('#main').hide();
 
 	// Get and pass meta data as params
-	var mobile = "mobile=" + getPhoneNumberFromUserInput();
-	var code = "code=" + getCodeFromUserInput();
-	var url = "https://lemont.typeform.com/to/n0tcww?" + mobile + "&" + code;
+	var mobile = 'mobile=' + getPhoneNumberFromUserInput();
+	var code = 'code=' + getCodeFromUserInput();
+	var url = 'https://lemont.typeform.com/to/n0tcww?' + mobile + '&' + code;
 
 	// Create iframe and add it to the body
 	var iframe = document.createElement('iframe');
@@ -294,6 +298,33 @@ function loadFormInCurrentPage() {
 	iframe.height = '100%';
 	iframe.src = url;
 	document.body.appendChild(iframe);
+}
+
+/**
+ * Check if the mobile number from user input is already used
+ */
+function isUserAlreadyCompletedForm() {
+	var mobile = getPhoneNumberFromUserInput()
+	var ref = firebase.database().ref('/users');
+	var query = ref.orderByChild('phone').equalTo(mobile)
+	query.once('value')
+	.then(function(snapshot) {
+		// snapshot.forEach(function (childSnapshot) {
+		// 	var childValue = childSnapshot.val();
+		// 	if (mobile.equalTo(childValue['phone'])) {
+		// 		return true;
+		// 	}
+		// });
+		var numChildren = snapshot.numChildren();
+		if (numChildren > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	})
+	.catch(function(error) {
+		console.log('error: ' + error);
+	});
 }
 
 /**
