@@ -21,6 +21,7 @@ html, body {
 body {
 	background-image: url('../img/new-zealand-haka.png');
 	background-size: cover;
+	height:100%;
 }
 h3 {
 	background: url('../img/logo.png') no-repeat;

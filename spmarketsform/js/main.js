@@ -17,11 +17,8 @@ window.onload = function() {
 			// User is signed in.
 			var uid = user.uid;
 			var email = user.email;
-			var photoURL = user.photoURL;
 			var phoneNumber = user.phoneNumber;
-			var isAnonymous = user.isAnonymous;
 			var displayName = user.displayName;
-			var providerData = user.providerData;
 			var emailVerified = user.emailVerified;
 		}
 		updateSignInButtonUI();
@@ -77,37 +74,69 @@ function onSignInSubmit(e) {
 		var phoneNumber = getFormattedPhoneNumber();
 		var appVerifier = window.recaptchaVerifier;
 		// Check if the mobile number is already used
-		if (isUserAlreadyCompletedForm()) {
-			return;
-		}
-		// Send verification code
-		showLoadingIndicator(true);
-		firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-		.then(function (confirmationResult) {
-			// SMS sent. Prompt user to type the code from the message, then sign the
-			// user in with confirmationResult.confirm(code).
-			window.confirmationResult = confirmationResult;
-			// [START_EXCLUDE silent]
-			window.signingIn = false;
-			updateSignInButtonUI();
-			updateVerificationCodeFormUI();
-			updateVerifyCodeButtonUI();
-			updateSignInFormUI();
-			// [END_EXCLUDE]
-			showLoadingIndicator(false);
-		}).catch(function (error) {
-			// Error; SMS not sent
-			// [START_EXCLUDE]
-			console.error('Error during signInWithPhoneNumber', error);
-			window.alert('Error during signInWithPhoneNumber:\n\n' + error.code + '\n\n' + error.message);
-			window.signingIn = false;
-			updateSignInFormUI();
-			updateSignInButtonUI();
-			// [END_EXCLUDE]
-			showLoadingIndicator(false);
-		});
+		checkMobileNumberAvailibility()
 		// [END signin]
 	}
+}
+
+/**
+ * Check if the mobile number from user input is already used
+ */
+function checkMobileNumberAvailibility() {
+	var mobile = getPhoneNumberFromUserInput()
+	var ref = firebase.database().ref('/users');
+	var query = ref.orderByChild('phone').equalTo(mobile)
+	query.once('value')
+	.then(function(snapshot) {
+		// snapshot.forEach(function (childSnapshot) {
+		// 	var childValue = childSnapshot.val();
+		// 	if (mobile.equalTo(childValue['phone'])) {
+		// 		return true;
+		// 	}
+		// });
+		var numChildren = snapshot.numChildren();
+		if (numChildren > 0) {
+			showAlert('This mobile number is already used.');
+		} else {
+			sendVerificationCode();
+		}
+	})
+	.catch(function(error) {
+		console.log('error: ' + error);
+		showAlert('Error on validating mobile number: ' + error);
+	});
+}
+
+/**
+ * Send verification code.
+ */
+function sendVerificationCode() {
+	showLoadingIndicator(true);
+	firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+	.then(function (confirmationResult) {
+		// SMS sent. Prompt user to type the code from the message, then sign the
+		// user in with confirmationResult.confirm(code).
+		window.confirmationResult = confirmationResult;
+		// [START_EXCLUDE silent]
+		window.signingIn = false;
+		updateSignInButtonUI();
+		updateVerificationCodeFormUI();
+		updateVerifyCodeButtonUI();
+		updateSignInFormUI();
+		// [END_EXCLUDE]
+		showLoadingIndicator(false);
+	}).catch(function (error) {
+		// Error; SMS not sent
+		// [START_EXCLUDE]
+		console.error('Error during signInWithPhoneNumber', error);
+		// window.alert('Error during signInWithPhoneNumber:\n\n' + error.code + '\n\n' + error.message);
+		showAlert('Error on sending verification code: ' + error);
+		window.signingIn = false;
+		updateSignInFormUI();
+		updateSignInButtonUI();
+		// [END_EXCLUDE]
+		showLoadingIndicator(false);
+	});
 }
 
 /**
@@ -137,7 +166,8 @@ function onVerifyCodeSubmit(e) {
 			// User couldn't sign in (bad verification code?)
 			// [START_EXCLUDE]
 			console.error('Error while checking the verification code', error);
-			window.alert('Error while checking the verification code:\n\n' + error.code + '\n\n' + error.message);
+			// window.alert('Error while checking the verification code:\n\n' + error.code + '\n\n' + error.message);
+			showAlert('Error while checking the verification code: ' + error);
 			window.verifyingCode = false;
 			updateSignInButtonUI();
 			updateVerifyCodeButtonUI();
@@ -301,33 +331,6 @@ function loadFormInCurrentPage() {
 }
 
 /**
- * Check if the mobile number from user input is already used
- */
-function isUserAlreadyCompletedForm() {
-	var mobile = getPhoneNumberFromUserInput()
-	var ref = firebase.database().ref('/users');
-	var query = ref.orderByChild('phone').equalTo(mobile)
-	query.once('value')
-	.then(function(snapshot) {
-		// snapshot.forEach(function (childSnapshot) {
-		// 	var childValue = childSnapshot.val();
-		// 	if (mobile.equalTo(childValue['phone'])) {
-		// 		return true;
-		// 	}
-		// });
-		var numChildren = snapshot.numChildren();
-		if (numChildren > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	})
-	.catch(function(error) {
-		console.log('error: ' + error);
-	});
-}
-
-/**
  * Create a loading indicator in the center of page.
  */
 function initLoadingIndicator() {
@@ -363,4 +366,50 @@ function showLoadingIndicator(show) {
 	} else {
 		document.getElementById('indicator').style.display = 'none';
 	}
+}
+
+/**
+ * Show a custom alert
+ */
+function showAlert(msg) {
+	// Create alert if it does not exist
+	if (document.getElementById('custom-alert') === null) {
+		// Create a container to block ui interaction
+		var container = document.createElement('div');
+		container.id = 'custom-alert';
+		container.style.position = 'absolute';
+		container.style.width = '100%';
+		container.style.height = '100%';
+		container.style.zIndex = 99;
+	
+		// Create alert div
+		var alert = document.createElement('div');
+		alert.className = 'alert';
+		container.appendChild(alert);
+	
+		// Create close button
+		var closebtn = document.createElement('span');
+		closebtn.id = 'closebtn';
+		closebtn.className = 'closebtn';
+		closebtn.innerHTML = '&times;';
+		closebtn.onclick = function() {
+			location.reload();
+			document.getElementById('custom-alert').style.display = 'none';
+		};
+		alert.appendChild(closebtn);
+		
+		// Create alert text
+		var text = document.createElement('div');
+		text.id = 'alert-text';
+		alert.appendChild(text);
+		
+		// Add alert to the page
+		document.body.appendChild(container);
+	}
+
+	// Set alert message
+	document.getElementById('alert-text').innerText = msg;
+
+	// Show alert
+	document.getElementById('custom-alert').style.display = 'block';
 }
