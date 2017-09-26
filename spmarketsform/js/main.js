@@ -2,8 +2,8 @@
  * Set up UI event listeners and registering Firebase auth listeners.
  */
 window.onload = function() {
-	// Hide status
-	$("#status").hide();
+	// Init loading indicator
+	initLoadingIndicator();
 	// Sign the current user out on load
 	firebase.auth().signOut().then(function() {
 		// Sign-out successful.
@@ -76,6 +76,8 @@ function onSignInSubmit(e) {
 		// [START signin]
 		var phoneNumber = getFormattedPhoneNumber();
 		var appVerifier = window.recaptchaVerifier;
+		// Send verification code
+		showLoadingIndicator(true);
 		firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
 		.then(function (confirmationResult) {
 			// SMS sent. Prompt user to type the code from the message, then sign the
@@ -88,6 +90,7 @@ function onSignInSubmit(e) {
 			updateVerifyCodeButtonUI();
 			updateSignInFormUI();
 			// [END_EXCLUDE]
+			showLoadingIndicator(false);
 		}).catch(function (error) {
 			// Error; SMS not sent
 			// [START_EXCLUDE]
@@ -97,6 +100,7 @@ function onSignInSubmit(e) {
 			updateSignInFormUI();
 			updateSignInButtonUI();
 			// [END_EXCLUDE]
+			showLoadingIndicator(false);
 		});
 		// [END signin]
 	}
@@ -112,6 +116,8 @@ function onVerifyCodeSubmit(e) {
 		updateVerifyCodeButtonUI();
 		// [START verifyCode]
 		var code = getCodeFromUserInput();
+		// Verify code
+		showLoadingIndicator(true);
 		confirmationResult.confirm(code).then(function (result) {
 			// User signed in successfully.
 			var user = result.user;
@@ -120,11 +126,9 @@ function onVerifyCodeSubmit(e) {
 			window.confirmationResult = null;
 			updateVerificationCodeFormUI();
 			// [END_EXCLUDE]
-			// TODO
-			// window.location.href = "form.html"
-			// window.location.replace("form.html")
-			// $("#main").load("form.html"); // Unable to pass values as params in the url
-			loadFormInCurrentPage(); // Can load form with param
+			showLoadingIndicator(false);
+			// Load the Typeform in current page
+			loadFormInCurrentPage();
 		}).catch(function (error) {
 			// User couldn't sign in (bad verification code?)
 			// [START_EXCLUDE]
@@ -134,6 +138,7 @@ function onVerifyCodeSubmit(e) {
 			updateSignInButtonUI();
 			updateVerifyCodeButtonUI();
 			// [END_EXCLUDE]
+			showLoadingIndicator(false);
 		});
 		// [END verifyCode]
 	}
@@ -278,15 +283,53 @@ function loadFormInCurrentPage() {
 
 	// Create iframe and add it to the body
 	var iframe = document.createElement('iframe');
-	iframe.style.position = "absolute"
+	iframe.style.position = 'absolute'
 	iframe.style.left = 0;
 	iframe.style.right = 0;
 	iframe.style.bottom = 0;
 	iframe.style.top = 0;
 	iframe.style.border = 0;
-	iframe.id = "typeform-full";
-	iframe.width = "100%";
-	iframe.height = "100%";
+	iframe.id = 'typeform-full';
+	iframe.width = '100%';
+	iframe.height = '100%';
 	iframe.src = url;
-	document.body.appendChild(iframe); // add it to wherever you need it in the document
+	document.body.appendChild(iframe);
+}
+
+/**
+ * Create a loading indicator in the center of page.
+ */
+function initLoadingIndicator() {
+	// Create container for loading indicator
+	var container = document.createElement('div');
+	container.id = 'indicator';
+	container.className = 'sk-circle';
+	container.style.position = 'absolute'
+	container.style.top = '50%';
+	container.style.left = '50%';
+	container.style.marginTop = '-30px';
+	container.style.marginLeft = '-30px';
+	container.style.zIndex = 99;
+	
+	// Add indicator states as child
+	for (i = 1; i <= 12; i++) {
+		var child = document.createElement('div');
+		child.className = 'sk-circle' + i + ' sk-child';
+		container.appendChild(child);
+	}
+	
+	// Add indicator and hide it by default
+	document.body.appendChild(container);
+	showLoadingIndicator(false);
+}
+
+/**
+ * Show loading indicator
+ */
+function showLoadingIndicator(show) {
+	if (show) {
+		document.getElementById('indicator').style.display.display = 'none';
+	} else {
+		document.getElementById('indicator').style.display.display = 'block';
+	}
 }
