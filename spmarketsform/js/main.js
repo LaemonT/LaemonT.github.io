@@ -70,12 +70,8 @@ function onSignInSubmit(e) {
 	if (isCaptchaOK() && isPhoneNumberValid()) {
 		window.signingIn = true;
 		updateSignInButtonUI();
-		// [START signin]
-		var phoneNumber = getFormattedPhoneNumber();
-		var appVerifier = window.recaptchaVerifier;
 		// Check if the mobile number is already used
 		checkMobileNumberAvailibility()
-		// [END signin]
 	}
 }
 
@@ -111,6 +107,9 @@ function checkMobileNumberAvailibility() {
  * Send verification code.
  */
 function sendVerificationCode() {
+	var phoneNumber = getFormattedPhoneNumber();
+	var appVerifier = window.recaptchaVerifier;
+	// [START signin]
 	showLoadingIndicator(true);
 	firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
 	.then(function (confirmationResult) {
@@ -137,6 +136,7 @@ function sendVerificationCode() {
 		// [END_EXCLUDE]
 		showLoadingIndicator(false);
 	});
+	// [END signin]
 }
 
 /**
@@ -381,7 +381,7 @@ function showAlert(msg) {
 		container.style.width = '100%';
 		container.style.height = '100%';
 		container.style.zIndex = 99;
-	
+		
 		// Create alert div
 		var alert = document.createElement('div');
 		alert.className = 'alert';
