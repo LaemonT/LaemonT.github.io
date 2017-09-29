@@ -19,7 +19,7 @@ html, body {
 	background-color: rgba(245, 245, 245, 0.6);
 }
 body {
-	background-image: url('../img/new-zealand-haka.png');
+	background-image: url('../img/bg.jpg');
 	background-size: cover;
 	height:100%;
 }
@@ -71,4 +71,7 @@ a {
 }
 #header {
 	background-color: rgba(67, 99, 174, 0.8);
+}
+#main {
+	background-color: rgba(255, 255, 255, 0.6);
 }
